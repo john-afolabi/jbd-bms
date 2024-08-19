@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "fmt"
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
@@ -30,8 +29,6 @@ const (
 	BMS_SERVICE_UUID              = "0000ff00-0000-1000-8000-00805f9b34fb"
 	BMS_SERVICE_CHARACTERISTIC_TX = "0000ff02-0000-1000-8000-00805f9b34fb"
 	BMS_SERVICE_CHARACTERISTIC_RX = "0000ff01-0000-1000-8000-00805f9b34fb"
-	BLUETOOTH_ADDRESS_UUID        = "64219a4f-522f-8ffc-3632-c2d7bc049692"
-	MAX_BMS_DATA_CAPACITY         = 100
 )
 
 var (
@@ -42,14 +39,7 @@ var (
 	bmsCharacteristicTX, _ = bluetooth.ParseUUID(BMS_SERVICE_CHARACTERISTIC_TX)
 	bmsCharacteristicRX, _ = bluetooth.ParseUUID(BMS_SERVICE_CHARACTERISTIC_RX)
 
-	ticker                = 0
-	bmsDataError          = false
-	bmsDataLengthReceived = 0
-	bmsDataLengthExpected = 0
-
-	bmsDataReceived = make([]byte, 0, MAX_BMS_DATA_CAPACITY)
-
-	guage = "data/bms/guage"
+	ticker = 0
 )
 
 var mqqtConfig = MQQTConfig{
@@ -294,7 +284,7 @@ func packInfo(data []byte) {
 		"remain":     remainF,
 		"capacity":   capacityF,
 		"cycles":     battPackData.Cycles,
-		"percentage": math.Round(percentage * 100)/100,
+		"percentage": math.Round(percentage*100) / 100,
 		"mDate":      battPackData.Mdate,
 	}
 
